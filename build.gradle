@@ -67,6 +67,6 @@ dependencies {
 ext {
     PUBLISH_GROUP_ID = 'io.github.beyka'
     PUBLISH_VERSION = '0.9.9.0'
-    PUBLISH_ARTIFACT_ID = 'Android-TiffBitmapFactory'
+PUBLISH_ARTIFACT_ID = 'Android-TiffBitmapFactory'
 }
-apply from: "${rootProject.projectDir}/publish-module.gradle"
+
