@@ -10,14 +10,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Sadece uygulamanın gereksinimi olan Java 11'i ayarlıyoruz
-      # (Problemli setup-android modülü tamamen eklendi)
       - uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'temurin'
 
-      # Sunucu içindeki hazır kurulu SDK ile kendi NDK'sını çekecek ve derleyecek
       - name: Build AAR with NDK
         run: |
           chmod +x ./gradlew
