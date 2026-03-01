@@ -9,17 +9,18 @@ buildscript {
     }
 }
 
+// DİKKAT: plugins bloğu buildscript'ten hemen sonra gelmeli!
+plugins {
+    id "com.android.library"
+}
+
+// allprojects bloğunu plugins'in altına aldık
 allprojects {
     repositories {
         google()
         mavenCentral()
         jcenter()
     }
-}
-
-
-plugins {
-    id "com.android.library"
 }
 
 android {
