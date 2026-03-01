@@ -7,3 +7,5 @@ APP_PLATFORM=android-16
 APP_ABI := arm64-v8a, armeabi-v7a
 
 #APP_OPTIM := debug
+
+APP_LDFLAGS += -Wl,-z,max-page-size=16384
