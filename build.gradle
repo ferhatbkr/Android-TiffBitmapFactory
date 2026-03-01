@@ -17,9 +17,7 @@ allprojects {
     }
 }
 
-plugins {
-    id "com.android.library"
-}
+apply plugin: "com.android.library"
 
 android {
     compileSdkVersion 30
@@ -61,6 +59,9 @@ android {
     lintOptions {
         abortOnError false
     }
+}
+
+dependencies {
 }
 
 ext {
