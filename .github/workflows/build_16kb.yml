@@ -1,16 +1,23 @@
 name: Build 16KB AAR
+
 on:
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
+
+      # 1. SDK Araclari icin Java 17 Kur
       - uses: actions/setup-java@v3
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
+
       - uses: android-actions/setup-android@v3
+
       - name: Install NDK 28 & Accept Licenses
         run: |
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
@@ -18,12 +25,22 @@ jobs:
           $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;28.0.12990064"
           echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/28.0.12990064" >> $GITHUB_ENV
           echo "ANDROID_NDK=$ANDROID_HOME/ndk/28.0.12990064" >> $GITHUB_ENV
+
+      # 2. Eski Gradle (6.x) Derlemesi Icin Tekrar Java 11'e Don
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
       - name: Make gradlew executable
         run: chmod +x ./gradlew
+
       - name: Clean
         run: ./gradlew clean
+
       - name: Build AAR with NDK
         run: ./gradlew :tiffbitmapfactory:assembleRelease --stacktrace
+
       - name: Upload AAR Artifact
         uses: actions/upload-artifact@v4
         with:
