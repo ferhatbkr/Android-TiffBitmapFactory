@@ -15,16 +15,20 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
+      - name: Inject Buildscript into Gradle
+        run: |
+          echo "buildscript { repositories { google(); mavenCentral(); jcenter() } dependencies { classpath 'com.android.tools.build:gradle:4.1.3' } }" > init.gradle
+          echo "allprojects { repositories { google(); mavenCentral(); jcenter() } }" >> init.gradle
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: '6.7.1'
 
-      # Alt modül belirtmiyoruz, projeyi doğrudan ana dizinde derliyoruz
+      # init.gradle dışarıdan bir kapsayıcı gibi gelip eksikleri sunar
       - name: Build AAR with NDK
-        run: gradle assembleRelease --stacktrace
+        run: gradle assembleRelease --init-script init.gradle --stacktrace
 
-      # Yol klasörsüz ve isminden emin olmak için joker (*) karakterli
       - name: Upload AAR Artifact
         uses: actions/upload-artifact@v4
         with:
