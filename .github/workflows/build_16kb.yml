@@ -15,12 +15,28 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
+      - name: Install NDK 21
+        run: |
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;21.3.6528147" || \
+          JAVA_HOME=$JAVA_HOME_17_X64 $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;21.3.6528147"
+          echo "NDK_HOME=$ANDROID_HOME/ndk/21.3.6528147" >> $GITHUB_ENV
+
+      - name: Build native .so files with ndk-build
+        run: |
+          $NDK_HOME/ndk-build \
+            NDK_PROJECT_PATH=. \
+            APP_BUILD_SCRIPT=src/main/jni/Android.mk \
+            NDK_APPLICATION_MK=src/main/jni/Application.mk \
+            NDK_OUT=build/jni-obj \
+            NDK_LIBS_OUT=src/main/libs \
+            -j$(nproc)
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: '6.7.1'
 
-      - name: Build AAR with NDK
+      - name: Build AAR
         run: gradle assembleRelease --stacktrace
 
       - name: Upload AAR Artifact
