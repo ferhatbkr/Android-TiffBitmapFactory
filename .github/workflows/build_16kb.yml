@@ -15,10 +15,15 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
+      # Repoda unutulmuş gradlew yerine dışarıdan uyumlu Gradle kuruyoruz
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '6.7.1'
+
+      # gradlew yerine doğrudan sisteme kurduğumuz gradle komutu
       - name: Build AAR with NDK
-        run: |
-          chmod +x ./gradlew
-          ./gradlew :tiffbitmapfactory:assembleRelease --stacktrace
+        run: gradle :tiffbitmapfactory:assembleRelease --stacktrace
 
       - name: Upload AAR Artifact
         uses: actions/upload-artifact@v4
