@@ -15,18 +15,18 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      # Repoda unutulmuş gradlew yerine dışarıdan uyumlu Gradle kuruyoruz
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: '6.7.1'
 
-      # gradlew yerine doğrudan sisteme kurduğumuz gradle komutu
+      # Alt modül belirtmiyoruz, projeyi doğrudan ana dizinde derliyoruz
       - name: Build AAR with NDK
-        run: gradle :tiffbitmapfactory:assembleRelease --stacktrace
+        run: gradle assembleRelease --stacktrace
 
+      # Yol klasörsüz ve isminden emin olmak için joker (*) karakterli
       - name: Upload AAR Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Android-TiffBitmapFactory-16KB
-          path: tiffbitmapfactory/build/outputs/aar/tiffbitmapfactory-release.aar
+          path: build/outputs/aar/*-release.aar
